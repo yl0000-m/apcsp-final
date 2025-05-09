@@ -2382,7 +2382,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var score = 0;
   var scoreLabel = add([
     text("Score: " + score, { size: 24 }),
-    pos(width() - 500, 30),
+    pos(width() - 200, 30),
     fixed()
   ]);
   function showMessage(msg) {
@@ -2491,7 +2491,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   }
   __name(respawn_snake, "respawn_snake");
   add([
-    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points! Gain 30 points to win.", { size: 20, font: "sinko" }),
+    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nGain 30 points to win!", { size: 20, font: "sinko" }),
     pos(24, 270),
     fixed()
   ]);
