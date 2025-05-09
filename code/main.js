@@ -1,6 +1,12 @@
 import kaboom from "kaboom";
 
-kaboom({background:[51,151,255]});
+kaboom({
+    background: [51,151,255],
+    width: 640,
+    height: 480,
+    scale: 1,
+    root: document.body,
+});
 
 loadSprite("background", "sprites/background.png");
 loadSprite("fence-top", "sprites/fence-top.png");
