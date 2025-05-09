@@ -2379,6 +2379,22 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     sprite("background"),
     layer("background")
   ]);
+  var score = 0;
+  var scoreLabel = add([
+    text(score, { size: 24 }),
+    pos(width() - 100, 30),
+    fixed()
+  ]);
+  action(() => {
+    if (!run_action)
+      return;
+    timer += dt();
+    if (timer >= 1) {
+      timer = 0;
+      score += 2;
+      scoreLabel.text = score;
+    }
+  });
   var directions = {
     UP: "up",
     DOWN: "down",
@@ -2501,6 +2517,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   respawn_all();
   collides("snake", "food", (s2, f) => {
     snake_length++;
+    score += 5;
+    scoreLabel.text = score;
     respawn_food();
   });
   collides("snake", "wall", (s2, w) => {
