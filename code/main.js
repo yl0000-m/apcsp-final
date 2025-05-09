@@ -152,7 +152,7 @@ function respawn_snake(){
   current_direction = directions.RIGHT;
 }
 add([
-		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 3 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", {size:20, font:"sinko"},),
+		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", {size:16, font:"sinko"},),
     pos(24, 270),
 		fixed(),
     ])
@@ -189,7 +189,7 @@ respawn_all();
 
 collides("snake", "food", (s, f) => {
     snake_length++;
-    score += 3;
+    score += 2;
     scoreLabel.text = "Score: " + score;
     // Increase speed every 10 points (5 bubbles)
     if (score % 10 === 0) {
