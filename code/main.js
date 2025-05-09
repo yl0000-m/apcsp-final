@@ -12,7 +12,10 @@ loadSprite("post-top-right", "sprites/post-top-right.png");
 loadSprite("post-bottom-left", "sprites/post-bottom-left.png");
 loadSprite("post-bottom-right", "sprites/post-bottom-right.png");
 loadSprite("snake-skin", "sprites/snake-skin.png");
-loadSprite("pearl", "sprites/pearl.png");
+loadSprite("pearl", "sprites/pearl.png", {
+    width: 20,
+    height: 20,
+});
 
 layers([
     "background",
