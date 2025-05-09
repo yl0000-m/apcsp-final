@@ -2352,11 +2352,10 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   // code/main.js
   kaboom_default({
     background: [51, 151, 255],
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: 640,
+    height: 480,
     scale: 1,
-    root: document.body,
-    stretch: true
+    root: document.body
   });
   loadSprite("background", "sprites/background.png");
   loadSprite("fence-top", "sprites/fence-top.png");
@@ -2384,14 +2383,13 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var score = 0;
   var scoreLabel = add([
     text("Score: " + score, { size: 24 }),
-    pos(width() - width() / 6, height() / 15),
+    pos(width() - 200, 30),
     fixed()
   ]);
   function showMessage(msg) {
     return add([
       text(msg, { size: 18 }),
-      pos(width() / 2, height() / 3),
-      origin("center"),
+      pos(width() - 350, height() / 3),
       fixed(),
       "message"
     ]);
@@ -2496,8 +2494,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   __name(respawn_snake, "respawn_snake");
   add([
     text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", { size: 16, font: "sinko" }),
-    pos(width() / 6, height() / 2),
-    origin("center"),
+    pos(24, 270),
     fixed()
   ]);
   var food = null;
