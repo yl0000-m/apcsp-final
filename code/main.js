@@ -22,6 +22,7 @@ loadSprite("bubble", "sprites/bubble.png", {
     width: 20,
     height: 20,
 });
+loadSprite("starfish", "sprites/starfish.png");
 
 layers([
     "background",
@@ -151,7 +152,7 @@ function respawn_snake(){
   current_direction = directions.RIGHT;
 }
 add([
-		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 3 points!\nGain 30 points to win!", {size:20, font:"sinko"},),
+		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 3 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", {size:20, font:"sinko"},),
     pos(24, 270),
 		fixed(),
     ])
@@ -199,9 +200,60 @@ collides("snake", "food", (s, f) => {
         showMessage("You Win!\nPress Space Bar to start again.");
     }
     respawn_food();
-});
+  });
 
-collides("snake", "wall", (s, w) => {
+  // Starfish spawning and collection logic
+  let starfish = null;
+
+  function spawnStarfish() {
+    if (starfish) {
+      destroy(starfish);
+    }
+    let new_pos = rand(vec2(1,1), vec2(13,13));
+    new_pos.x = Math.floor(new_pos.x);
+    new_pos.y = Math.floor(new_pos.y);
+    new_pos = new_pos.scale(block_size);
+
+    starfish = add([
+      sprite('starfish'),
+      pos(new_pos),
+      area(),
+      "starfish"
+    ]);
+
+    // Make starfish disappear after 3 seconds
+    wait(3, () => {
+      if (starfish) {
+        destroy(starfish);
+        starfish = null;
+      }
+    });
+  }
+
+  // Spawn starfish randomly (about every 8-15 seconds)
+  function startStarfishSpawning() {
+    wait(rand(8, 15), () => {
+      spawnStarfish();
+      startStarfishSpawning();
+    });
+  }
+
+  startStarfishSpawning();
+
+  collides("snake", "starfish", (s, star) => {
+    if (starfish) {
+      destroy(starfish);
+      starfish = null;
+      score += 5;
+      scoreLabel.text = "Score: " + score;
+      if (score >= 30) {
+        run_action = false;
+        showMessage("You Win!\nPress Space Bar to start again.");
+      }
+    }
+  });
+
+  collides("snake", "wall", (s, w) => {
     run_action = false;
     shake(12);
     showMessage("Game Over.\nPress Space Bar to try again.");

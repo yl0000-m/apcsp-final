@@ -2371,6 +2371,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     width: 20,
     height: 20
   });
+  loadSprite("starfish", "sprites/starfish.png");
   layers([
     "background",
     "game"
@@ -2492,7 +2493,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   }
   __name(respawn_snake, "respawn_snake");
   add([
-    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 3 points!\nGain 30 points to win!", { size: 20, font: "sinko" }),
+    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 3 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", { size: 20, font: "sinko" }),
     pos(24, 270),
     fixed()
   ]);
@@ -2535,6 +2536,49 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       showMessage("You Win!\nPress Space Bar to start again.");
     }
     respawn_food();
+  });
+  var starfish = null;
+  function spawnStarfish() {
+    if (starfish) {
+      destroy(starfish);
+    }
+    let new_pos = rand(vec2(1, 1), vec2(13, 13));
+    new_pos.x = Math.floor(new_pos.x);
+    new_pos.y = Math.floor(new_pos.y);
+    new_pos = new_pos.scale(block_size);
+    starfish = add([
+      sprite("starfish"),
+      pos(new_pos),
+      area(),
+      "starfish"
+    ]);
+    wait(3, () => {
+      if (starfish) {
+        destroy(starfish);
+        starfish = null;
+      }
+    });
+  }
+  __name(spawnStarfish, "spawnStarfish");
+  function startStarfishSpawning() {
+    wait(rand(8, 15), () => {
+      spawnStarfish();
+      startStarfishSpawning();
+    });
+  }
+  __name(startStarfishSpawning, "startStarfishSpawning");
+  startStarfishSpawning();
+  collides("snake", "starfish", (s2, star) => {
+    if (starfish) {
+      destroy(starfish);
+      starfish = null;
+      score += 5;
+      scoreLabel.text = "Score: " + score;
+      if (score >= 30) {
+        run_action = false;
+        showMessage("You Win!\nPress Space Bar to start again.");
+      }
+    }
   });
   collides("snake", "wall", (s2, w) => {
     run_action = false;
