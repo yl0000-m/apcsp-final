@@ -2361,7 +2361,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSprite("post-bottom-left", "sprites/post-bottom-left.png");
   loadSprite("post-bottom-right", "sprites/post-bottom-right.png");
   loadSprite("snake-skin", "sprites/snake-skin.png");
-  loadSprite("pearl", "sprites/pearl.png", {
+  loadSprite("bubble", "sprites/bubble.png", {
     width: 20,
     height: 20
   });
