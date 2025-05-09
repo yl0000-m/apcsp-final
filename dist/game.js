@@ -2397,6 +2397,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   function resetGame() {
     score = 0;
     scoreLabel.text = "Score: " + score;
+    move_delay = 0.2;
     destroyAll("message");
     run_action = true;
     respawn_all();
@@ -2526,6 +2527,9 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     snake_length++;
     score += 2;
     scoreLabel.text = "Score: " + score;
+    if (score % 10 === 0) {
+      move_delay = Math.max(0.05, move_delay - 0.03);
+    }
     if (score >= 30) {
       run_action = false;
       showMessage("You Win!\nPress Space Bar to start again.");
