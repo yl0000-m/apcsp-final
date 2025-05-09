@@ -52,6 +52,7 @@ function showMessage(msg) {
 function resetGame() {
     score = 0;
     scoreLabel.text = "Score: " + score;
+    move_delay = 0.2;  // Reset speed
     destroyAll("message");
     run_action = true;
     respawn_all();
@@ -189,6 +190,10 @@ collides("snake", "food", (s, f) => {
     snake_length++;
     score += 2;
     scoreLabel.text = "Score: " + score;
+    // Increase speed every 10 points (5 bubbles)
+    if (score % 10 === 0) {
+        move_delay = Math.max(0.05, move_delay - 0.03);
+    }
     if (score >= 30) {
         run_action = false;
         showMessage("You Win!\nPress Space Bar to start again.");
