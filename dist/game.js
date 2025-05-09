@@ -2493,7 +2493,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   }
   __name(respawn_snake, "respawn_snake");
   add([
-    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", { size: 16, font: "sinko" }),
+    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 3 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", { size: 20, font: "sinko" }),
     pos(24, 270),
     fixed()
   ]);
@@ -2526,7 +2526,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   respawn_all();
   collides("snake", "food", (s2, f) => {
     snake_length++;
-    score += 2;
+    score += 3;
     scoreLabel.text = "Score: " + score;
     if (score % 10 === 0) {
       move_delay = Math.max(0.05, move_delay - 0.03);
