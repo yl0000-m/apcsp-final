@@ -2382,12 +2382,12 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var score = 0;
   var scoreLabel = add([
     text("Score: " + score, { size: 24 }),
-    pos(width() - 100, 30),
+    pos(width() - 500, 30),
     fixed()
   ]);
   function showMessage(msg) {
     return add([
-      text(msg, { size: 24 }),
+      text(msg, { size: 18 }),
       pos(width() - 350, height() / 3),
       fixed(),
       "message"
