@@ -40,16 +40,22 @@ const scoreLabel = add([
     fixed()
 ]);
 
-// Increment score every second
-action(() => {
-    if (!run_action) return;
-    timer += dt();
-    if (timer >= 1) {
-        timer = 0;
-        score += 2;
-        scoreLabel.text = score;
-    }
-});
+function showMessage(msg) {
+    return add([
+        text(msg, { size: 24 }),
+        pos(width() - 200, height()/2),
+        fixed(),
+        "message"
+    ]);
+}
+
+function resetGame() {
+    score = 0;
+    scoreLabel.text = score;
+    destroyAll("message");
+    run_action = true;
+    respawn_all();
+}
 
 const directions = {
   UP: "up",
@@ -181,21 +187,31 @@ respawn_all();
 
 collides("snake", "food", (s, f) => {
     snake_length++;
-    score += 5;
+    score += 2;
     scoreLabel.text = score;
+    if (score >= 30) {
+        run_action = false;
+        showMessage("You Win!\nPress Space Bar to start again.");
+    }
     respawn_food();
 });
 
 collides("snake", "wall", (s, w) => {
     run_action = false;
     shake(12);
-    respawn_all();
+    showMessage("Game Over.\nPress Space Bar to try again.");
 });
 
 collides("snake", "snake", (s, t) => {
     run_action = false;
     shake(12);
-    respawn_all();
+    showMessage("Game Over.\nPress Space Bar to try again.");
+});
+
+keyPress("space", () => {
+    if (!run_action) {
+        resetGame();
+    }
 });
 
 keyPress("up", () => {
