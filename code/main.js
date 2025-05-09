@@ -12,7 +12,10 @@ loadSprite("post-top-right", "sprites/post-top-right.png");
 loadSprite("post-bottom-left", "sprites/post-bottom-left.png");
 loadSprite("post-bottom-right", "sprites/post-bottom-right.png");
 loadSprite("snake-skin", "sprites/snake-skin.png");
-loadSprite("pizza", "sprites/pizza.png");
+loadSprite("pearl", "sprites/pearl.png", {
+    width: 20,
+    height: 20,
+});
 
 layers([
     "background",
@@ -134,7 +137,7 @@ function respawn_food(){
         destroy(food);
     }
     food = add([
-                sprite('pizza'),
+                sprite('pearl'),
                 pos(new_pos),
                 area(),
                 "food"
