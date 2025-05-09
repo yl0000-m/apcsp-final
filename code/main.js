@@ -1,12 +1,11 @@
 import kaboom from "kaboom";
 
 kaboom({
-    background: [51,151,255],
-    width: window.innerWidth,
-    height: window.innerHeight,
+    background: [51, 151, 255],
+    width: 640,
+    height: 480,
     scale: 1,
     root: document.body,
-    stretch: true,
 });
 
 loadSprite("background", "sprites/background.png");
