@@ -2381,14 +2381,14 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   ]);
   var score = 0;
   var scoreLabel = add([
-    text(score, { size: 24 }),
+    text("Score: " + score, { size: 24 }),
     pos(width() - 100, 30),
     fixed()
   ]);
   function showMessage(msg) {
     return add([
       text(msg, { size: 24 }),
-      pos(width() - 200, height() / 2),
+      pos(width() - 350, height() / 3),
       fixed(),
       "message"
     ]);
@@ -2396,7 +2396,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   __name(showMessage, "showMessage");
   function resetGame() {
     score = 0;
-    scoreLabel.text = score;
+    scoreLabel.text = "Score: " + score;
     destroyAll("message");
     run_action = true;
     respawn_all();
@@ -2525,7 +2525,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   collides("snake", "food", (s2, f) => {
     snake_length++;
     score += 2;
-    scoreLabel.text = score;
+    scoreLabel.text = "Score: " + score;
     if (score >= 30) {
       run_action = false;
       showMessage("You Win!\nPress Space Bar to start again.");
