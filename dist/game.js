@@ -2476,7 +2476,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       destroy(food);
     }
     food = add([
-      sprite("pearl"),
+      sprite("bubble"),
       pos(new_pos),
       area(),
       "food"
