@@ -33,12 +33,23 @@ add([
     layer("background")
 ]);
 
-const directions = {
-  UP: "up",
-  DOWN: "down",
-  LEFT: "left",
-  RIGHT: "right"
-};
+let score = 0;
+const WINNING_SCORE = 40;
+
+scene("game", () => {
+    score = 0;
+    const scoreLabel = add([
+        text(score, { size: 24 }),
+        pos(30, 30),
+        fixed()
+    ]);
+
+    const directions = {
+        UP: "up",
+        DOWN: "down",
+        LEFT: "left",
+        RIGHT: "right"
+    };
 
 let current_direction = directions.RIGHT;
 let run_action = false;
@@ -162,21 +173,75 @@ function respawn_all(){
 respawn_all();
 
 collides("snake", "food", (s, f) => {
-    snake_length ++;
+    snake_length++;
+    score += 5;
+    scoreLabel.text = score;
+    if (score >= WINNING_SCORE) {
+        go("win");
+    }
     respawn_food();
+});
+
+action(() => {
+    if (!run_action) return;
+    timer += dt();
+    if (timer >= 1) {
+        timer = 0;
+        score += 2;
+        scoreLabel.text = score;
+        if (score >= WINNING_SCORE) {
+            go("win");
+        }
+    }
 });
 
 collides("snake", "wall", (s, w) => {
     run_action = false;
     shake(12);
-    respawn_all();
+    go("lose");
 });
 
 collides("snake", "snake", (s, t) => {
     run_action = false;
     shake(12);
-    respawn_all();
+    go("lose");
 });
+
+});
+
+scene("win", () => {
+    add([
+        text("You Win!\nPress Space Bar to start again.", {
+            size: 24,
+            width: width(),
+            align: "center"
+        }),
+        pos(width()/2, height()/2),
+        origin("center")
+    ]);
+    
+    keyPress("space", () => {
+        go("game");
+    });
+});
+
+scene("lose", () => {
+    add([
+        text("Game Over.\nPress Space Bar to try again.", {
+            size: 24,
+            width: width(),
+            align: "center"
+        }),
+        pos(width()/2, height()/2),
+        origin("center")
+    ]);
+    
+    keyPress("space", () => {
+        go("game");
+    });
+});
+
+go("game");
 
 keyPress("up", () => {
     if (current_direction != directions.DOWN){
