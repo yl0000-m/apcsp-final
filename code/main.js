@@ -2,10 +2,11 @@ import kaboom from "kaboom";
 
 kaboom({
     background: [51,151,255],
-    width: 640,
-    height: 480,
+    width: window.innerWidth,
+    height: window.innerHeight,
     scale: 1,
     root: document.body,
+    stretch: true,
 });
 
 loadSprite("background", "sprites/background.png");
@@ -37,14 +38,15 @@ add([
 let score = 0;
 const scoreLabel = add([
     text("Score: " + score, { size: 24 }),
-    pos(width() - 200, 30),
+    pos(width() - width()/6, height()/15),
     fixed()
 ]);
 
 function showMessage(msg) {
     return add([
         text(msg, { size: 18 }),
-        pos(width() - 350, height()/3),
+        pos(width()/2, height()/3),
+      origin("center"),
         fixed(),
         "message"
     ]);
@@ -153,7 +155,8 @@ function respawn_snake(){
 }
 add([
 		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", {size:16, font:"sinko"},),
-    pos(24, 270),
+    pos(width()/6, height()/2),
+    origin("center"),
 		fixed(),
     ])
 
