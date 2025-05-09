@@ -137,7 +137,7 @@ function respawn_food(){
         destroy(food);
     }
     food = add([
-                sprite('pearl'),
+                sprite('bubble'),
                 pos(new_pos),
                 area(),
                 "food"
