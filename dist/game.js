@@ -2361,7 +2361,10 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSprite("post-bottom-left", "sprites/post-bottom-left.png");
   loadSprite("post-bottom-right", "sprites/post-bottom-right.png");
   loadSprite("snake-skin", "sprites/snake-skin.png");
-  loadSprite("pizza", "sprites/pizza.png");
+  loadSprite("pearl", "sprites/pearl.png", {
+    width: 20,
+    height: 20
+  });
   layers([
     "background",
     "game"
@@ -2473,7 +2476,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       destroy(food);
     }
     food = add([
-      sprite("pizza"),
+      sprite("pearl"),
       pos(new_pos),
       area(),
       "food"
