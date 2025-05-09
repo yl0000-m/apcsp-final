@@ -35,7 +35,7 @@ add([
 
 let score = 0;
 const scoreLabel = add([
-    text(score, { size: 24 }),
+    text("Score: " + score, { size: 24 }),
     pos(width() - 100, 30),
     fixed()
 ]);
@@ -43,7 +43,7 @@ const scoreLabel = add([
 function showMessage(msg) {
     return add([
         text(msg, { size: 24 }),
-        pos(width() - 200, height()/2),
+        pos(width() - 350, height()/3),
         fixed(),
         "message"
     ]);
@@ -51,7 +51,7 @@ function showMessage(msg) {
 
 function resetGame() {
     score = 0;
-    scoreLabel.text = score;
+    scoreLabel.text = "Score: " + score;
     destroyAll("message");
     run_action = true;
     respawn_all();
@@ -188,7 +188,7 @@ respawn_all();
 collides("snake", "food", (s, f) => {
     snake_length++;
     score += 2;
-    scoreLabel.text = score;
+    scoreLabel.text = "Score: " + score;
     if (score >= 30) {
         run_action = false;
         showMessage("You Win!\nPress Space Bar to start again.");
