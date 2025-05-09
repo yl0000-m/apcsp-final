@@ -35,7 +35,7 @@ add([
 
 let score = 0;
 const scoreLabel = add([
-    text(score, { size: 24 }),
+    text("Score: " + score, { size: 24 }),
     pos(width() - 100, 30),
     fixed()
 ]);
@@ -51,7 +51,7 @@ function showMessage(msg) {
 
 function resetGame() {
     score = 0;
-    scoreLabel.text = score;
+    scoreLabel.text = "Score: " + score;
     destroyAll("message");
     run_action = true;
     respawn_all();
@@ -150,8 +150,8 @@ function respawn_snake(){
   current_direction = directions.RIGHT;
 }
 add([
-		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!", {size:20, font:"sinko"},),
-    pos(24, 270),
+		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls! \nEach bubble is 2 points. Gain 30 points to win the game! ", {size:20, font:"sinko"},),
+    pos(width() - 320, 270),
 		fixed(),
     ])
 
@@ -188,7 +188,7 @@ respawn_all();
 collides("snake", "food", (s, f) => {
     snake_length++;
     score += 2;
-    scoreLabel.text = score;
+    scoreLabel.text = "Score: " + score;
     if (score >= 30) {
         run_action = false;
         showMessage("You Win!\nPress Space Bar to start again.");
