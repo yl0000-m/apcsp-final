@@ -36,8 +36,11 @@ add([
 
 let score = 0;
 const scoreLabel = add([
-    text("Score: " + score, { size: 24 }),
-    pos(width() - 200, 30),
+    text("Score: " + score, { 
+        size: 24,
+        font: "sinko",
+    }),
+    pos(width() - 180, 30),
     fixed()
 ]);
 
@@ -152,10 +155,13 @@ function respawn_snake(){
   current_direction = directions.RIGHT;
 }
 add([
-		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", {size:16, font:"sinko"},),
+    text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!\n\nEach bubble is 2 points!\nLookout for starfish! They are 5 points!\nGain 30 points to win!", {
+        size: 14,
+        font: "sinko",
+    }),
     pos(24, 270),
-		fixed(),
-    ])
+    fixed(),
+])
 
 let food = null;
 
