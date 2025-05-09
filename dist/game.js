@@ -2385,16 +2385,23 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     pos(width() - 100, 30),
     fixed()
   ]);
-  action(() => {
-    if (!run_action)
-      return;
-    timer += dt();
-    if (timer >= 1) {
-      timer = 0;
-      score += 2;
-      scoreLabel.text = score;
-    }
-  });
+  function showMessage(msg) {
+    return add([
+      text(msg, { size: 24 }),
+      pos(width() - 200, height() / 2),
+      fixed(),
+      "message"
+    ]);
+  }
+  __name(showMessage, "showMessage");
+  function resetGame() {
+    score = 0;
+    scoreLabel.text = score;
+    destroyAll("message");
+    run_action = true;
+    respawn_all();
+  }
+  __name(resetGame, "resetGame");
   var directions = {
     UP: "up",
     DOWN: "down",
@@ -2517,19 +2524,28 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   respawn_all();
   collides("snake", "food", (s2, f) => {
     snake_length++;
-    score += 5;
+    score += 2;
     scoreLabel.text = score;
+    if (score >= 30) {
+      run_action = false;
+      showMessage("You Win!\nPress Space Bar to start again.");
+    }
     respawn_food();
   });
   collides("snake", "wall", (s2, w) => {
     run_action = false;
     shake(12);
-    respawn_all();
+    showMessage("Game Over.\nPress Space Bar to try again.");
   });
   collides("snake", "snake", (s2, t) => {
     run_action = false;
     shake(12);
-    respawn_all();
+    showMessage("Game Over.\nPress Space Bar to try again.");
+  });
+  keyPress("space", () => {
+    if (!run_action) {
+      resetGame();
+    }
   });
   keyPress("up", () => {
     if (current_direction != directions.DOWN) {
