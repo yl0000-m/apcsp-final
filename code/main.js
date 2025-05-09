@@ -117,7 +117,7 @@ function respawn_snake(){
   current_direction = directions.RIGHT;
 }
 add([
-		text("\nSimple Under the Sea Snake Game!\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!", {size:20, font:"sinko"},),
+		text("\nUnder the Sea Snake Game!\n\nCollect bubbles to grow longer\nbut BE CAREFUL: don't crash into\nyour tail or the walls!", {size:20, font:"sinko"},),
     pos(24, 270),
 		fixed(),
     ])
