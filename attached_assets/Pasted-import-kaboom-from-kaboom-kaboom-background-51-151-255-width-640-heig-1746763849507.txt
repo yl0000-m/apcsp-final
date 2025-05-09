@@ -1,0 +1,238 @@
+import kaboom from "kaboom";
+
+kaboom({
+    background: [51, 151, 255],
+    width: 640,
+    height: 480,
+    scale: 1,
+    root: document.body,
+});
+
+loadSprite("background", "sprites/background.png");
+loadSprite("fence-top", "sprites/fence-top.png");
+loadSprite("fence-bottom", "sprites/fence-bottom.png");
+loadSprite("fence-left", "sprites/fence-left.png");
+loadSprite("fence-right", "sprites/fence-right.png");
+loadSprite("post-top-left", "sprites/post-top-left.png");
+loadSprite("post-top-right", "sprites/post-top-right.png");
+loadSprite("post-bottom-left", "sprites/post-bottom-left.png");
+loadSprite("post-bottom-right", "sprites/post-bottom-right.png");
+loadSprite("snake-skin", "sprites/skin.png");
+loadSprite("bubble", "sprites/bubble.png", {
+    width: 20,
+    height: 20,
+});
+
+layers([
+    "background",
+    "game"
+], "game");
+
+add([
+    sprite("background"),
+    layer("background")
+]);
+
+const directions = {
+    UP: "up",
+    DOWN: "down",
+    LEFT: "left",
+    RIGHT: "right"
+};
+
+let current_direction = directions.RIGHT;
+let run_action = false;
+let snake_length = 3;
+let snake_body = [];
+let current_level = 0;
+const levels = [
+    {
+        map: [
+            "1tttttttttttt2",
+            "l            r ",
+            "3bbbbbbbbbbbb4",
+        ],
+        speed: 0.2
+    },
+    {
+        map: [
+            "1tttttttttttt2",
+            "l             r",
+            "3bbbbbbbbbbbb4",
+        ],
+        speed: 0.15
+    },
+    {
+        map: [
+            "1tttttttttttt2",
+            "l              r",
+            "3bbbbbbbbbbbb4",
+        ],
+        speed: 0.1
+    }
+];
+
+const block_size = 20;
+
+// Start the first level
+startLevel(current_level);
+
+function startLevel(level) {
+    current_direction = directions.RIGHT;
+    run_action = false;
+    snake_length = 3;
+    snake_body = [];
+    const map = levels[level].map;
+
+    addLevel(map, {
+        width: block_size,
+        height: block_size,
+        pos: vec2(0, 0),
+        "t": () => [sprite("fence-top"), area(), "wall"],
+        "b": () => [sprite("fence-bottom"), area(), "wall"],
+        "l": () => [sprite("fence-left"), area(), "wall"],
+        "r": () => [sprite("fence-right"), area(), "wall"],
+        "1": () => [sprite("post-top-left"), area(), "wall"],
+        "2": () => [sprite("post-top-right"), area(), "wall"],
+        "3": () => [sprite("post-bottom-left"), area(), "wall"],
+        "4": () => [sprite("post-bottom-right"), area(), "wall"],
+    });
+    
+    respawn_snake();
+    respawn_food();
+    run_action = true;
+
+    keyPress("up", () => {
+        if (current_direction != directions.DOWN) {
+            current_direction = directions.UP;
+        }
+    });
+
+    keyPress("down", () => {
+        if (current_direction != directions.UP) {
+            current_direction = directions.DOWN;
+        }
+    });
+
+    keyPress("left", () => {
+        if (current_direction != directions.RIGHT) {
+            current_direction = directions.LEFT;
+        }
+    });
+
+    keyPress("right", () => {
+        if (current_direction != directions.LEFT) {
+            current_direction = directions.RIGHT;
+        }
+    });
+
+    // Snake movement
+    let timer = 0;
+    action(() => {
+        if (!run_action) return;
+        timer += dt();
+        if (timer < levels[level].speed) return; // Use the level speed
+        timer = 0;
+
+        moveSnake();
+    });
+
+    collides("snake", "food", (s, f) => {
+        snake_length++;
+        respawn_food();
+        if (snake_length > 15 && level < levels.length - 1) {
+            current_level++;
+            startLevel(current_level); // Move to the next level
+        }
+    });
+
+    collides("snake", "wall", () => {
+        gameOver();
+    });
+
+    collides("snake", "snake", () => {
+        gameOver();
+    });
+}
+
+function moveSnake() {
+    const move_x = (current_direction === directions.RIGHT) ? block_size :
+        (current_direction === directions.LEFT) ? -block_size : 0;
+    const move_y = (current_direction === directions.DOWN) ? block_size :
+        (current_direction === directions.UP) ? -block_size : 0;
+    
+    const snake_head = snake_body[snake_body.length - 1];
+
+    snake_body.push(add([
+        sprite('snake-skin'),
+        pos(snake_head.pos.x + move_x, snake_head.pos.y + move_y),
+        area(),
+        "snake"
+    ]));
+
+    if (snake_body.length > snake_length) {
+        const tail = snake_body.shift();
+        destroy(tail);
+    }
+}
+
+function respawn_snake() {
+    snake_body.forEach(segment => {
+        destroy(segment);
+    });
+    snake_body = [];
+    for (let i = 1; i <= snake_length; i++) {
+        snake_body.push(add([
+            sprite('snake-skin'),
+            pos(block_size, block_size * i),
+            area(),
+            "snake"
+        ]));
+    }
+}
+
+let food = null;
+
+function respawn_food() {
+    let new_pos = rand(vec2(1, 1), vec2(13, 13));
+    new_pos.x = Math.floor(new_pos.x);
+    new_pos.y = Math.floor(new_pos.y);
+    new_pos = new_pos.scale(block_size);
+
+    if (food) {
+        destroy(food);
+    }
+    food = add([
+        sprite('bubble'),
+        pos(new_pos),
+        area(),
+        "food"
+    ]);
+}
+
+function gameOver() {
+    run_action = false;
+    go("lose"); // Show the losing scene
+}
+
+scene("lose", () => {
+    add([
+        text("So close! You have lost.", { size: 48 }),
+        pos(center()),
+        origin("center"),
+    ]);
+    keyPress("space", () => {
+        go("game");
+    });
+});
+
+scene("win", () => {
+    add([
+        text("Congratulations! You won!", { size: 48 }),
+        pos(center()),
+        origin("center"),
+    ]);
+    keyPress("space", () => {
+        go("game");
+    });
+});
