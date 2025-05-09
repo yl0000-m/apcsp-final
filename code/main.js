@@ -33,6 +33,24 @@ add([
     layer("background")
 ]);
 
+let score = 0;
+const scoreLabel = add([
+    text(score, { size: 24 }),
+    pos(width() - 100, 30),
+    fixed()
+]);
+
+// Increment score every second
+action(() => {
+    if (!run_action) return;
+    timer += dt();
+    if (timer >= 1) {
+        timer = 0;
+        score += 2;
+        scoreLabel.text = score;
+    }
+});
+
 const directions = {
   UP: "up",
   DOWN: "down",
@@ -162,7 +180,9 @@ function respawn_all(){
 respawn_all();
 
 collides("snake", "food", (s, f) => {
-    snake_length ++;
+    snake_length++;
+    score += 5;
+    scoreLabel.text = score;
     respawn_food();
 });
 
