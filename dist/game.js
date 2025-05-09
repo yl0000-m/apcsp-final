@@ -2350,13 +2350,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var kaboom_default = xn();
 
   // code/main.js
-  kaboom_default({
-    background: [51, 151, 255],
-    width: 640,
-    height: 480,
-    scale: 1,
-    root: document.body
-  });
+  kaboom_default({ background: [51, 151, 255] });
   loadSprite("background", "sprites/background.png");
   loadSprite("fence-top", "sprites/fence-top.png");
   loadSprite("fence-bottom", "sprites/fence-bottom.png");
@@ -2366,7 +2360,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   loadSprite("post-top-right", "sprites/post-top-right.png");
   loadSprite("post-bottom-left", "sprites/post-bottom-left.png");
   loadSprite("post-bottom-right", "sprites/post-bottom-right.png");
-  loadSprite("snake-skin", "sprites/skin.png");
+  loadSprite("snake-skin", "sprites/snake-skin.png");
   loadSprite("bubble", "sprites/bubble.png", {
     width: 20,
     height: 20
