@@ -43,10 +43,13 @@ const scoreLabel = add([
 
 function showMessage(msg) {
     return add([
-        text(msg, { size: 18 }),
-        pos(width() - 350, height()/3),
-        fixed(),
-        "message"
+      text(msg, { 
+          size: 18,
+          font: "sinko",
+      }),
+      pos(width() - 350, height() / 3),
+      fixed(),
+      "message"
     ]);
 }
 
@@ -256,13 +259,13 @@ collides("snake", "food", (s, f) => {
   collides("snake", "wall", (s, w) => {
     run_action = false;
     shake(12);
-    showMessage("Game Over.\nPress Space Bar to try again.");
+    showMessage("Game Over.\nPress Space Bar to try again.", { font: "sinko" });
 });
 
 collides("snake", "snake", (s, t) => {
     run_action = false;
     shake(12);
-    showMessage("Game Over.\nPress Space Bar to try again.");
+    showMessage("Game Over.\nPress Space Bar to try again.", { font: "sinko" });
 });
 
 keyPress("space", () => {
